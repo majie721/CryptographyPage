@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<title>Pure front-end page encryption and decryption</title>    
 <head>
     <style>
         body {
@@ -81,7 +82,8 @@
             font-size: 14px;
             color: red;
             position: relative;
-            display: none;
+            min-height: 38px;
+            /* display: none; */
         }
 
         button {
@@ -109,24 +111,38 @@
         #keybox input {
             width: 100%;
         }
+
+        #result::after {
+            content: 'click to copy';
+            right: 10px;
+            top: 10px;
+            position: absolute;
+            display: block;
+            background-color: #333030;
+            color: #fff;
+            
+        }
     </style>
 </head>
 <body>
     <div id="form-box">
+        <div>
+            <h1 style="text-align: center;">JS AES Encryption and Decryption</h1>
+        </div>
         <form id="myForm">
             <div class="tab" >
                 <input id="encrypt" type="radio" name="tab" checked>
-                <label for="encrypt">加密</label>
+                <label for="encrypt">Encrypt</label>
                 <input id="decrypt" type="radio" name="tab">
-                <label for="decrypt">解密</label>
+                <label for="decrypt">Decrypt</label>
             </div>
-            <label for="key">密钥</label>
+            <label for="key">Key</label>
             <div id="keybox">
-                <input id="key-input" name="key" type="password" autocomplete="off" placeholder="Enter key" required>
+                <input id="key-input" name="key" type="password" autocomplete="off" placeholder="Enter key">
             </div>
-            <label id="codeLable" for="key">密码文本</label>
+            <label id="codeLable" for="key">Text</label>
             <textarea id="text-input" placeholder="Enter text" autocomplete="off" required></textarea>
-            <button type="submit">提交</button>
+            <button type="submit">Submit</button>
         </form>
     </div>
     <div id="result" onclick="copyToClipboard()" ></div>
@@ -145,10 +161,10 @@
             var result;
 
             if (document.getElementById('encrypt').checked) {
-                result = CryptoJS.AES.encrypt(text, key).toString() || '加密错误!!!';
+                result = CryptoJS.AES.encrypt(text, key).toString() || 'encryption failed!!!';
             } else {
                 var bytes  = CryptoJS.AES.decrypt(text, key);
-                result = bytes.toString(CryptoJS.enc.Utf8) || '解密错误!!!';
+                result = bytes.toString(CryptoJS.enc.Utf8) || 'decryption  failed!!!';
             }
             document.getElementById('result').style.display = 'block';
             document.getElementById('result').textContent = result;
@@ -162,12 +178,12 @@
         } 
         
         function changeE(){
-            document.getElementById('codeLable').textContent = '原始密码';
+            document.getElementById('codeLable').textContent = 'Text';
             clearForm();
         }
 
         function changeD(){
-            document.getElementById('codeLable').textContent = '加密文本';
+            document.getElementById('codeLable').textContent = 'Ciphertext';
             clearForm();
         }
 
