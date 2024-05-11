@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
-<title>Pure front-end page encryption and decryption</title>    
+<title>Pure front-end page encryption and decryption</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1">   
 <head>
     <style>
         body {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             height: 100vh;
             width: 100vw;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         #form-box {
             width: 60%;
+            margin-top: 100px;
             background-color: aqua;
         }
         form {
@@ -122,6 +126,14 @@
             color: #fff;
             
         }
+        @media only screen and (max-width: 800px) {
+            #form-box {
+                width: 90%;
+            }
+            #result {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -192,8 +204,20 @@
         }
 
         function copyToClipboard() {
-            var result = document.getElementById('result').textContent;
-            navigator.clipboard.writeText(result);
+            var text = document.getElementById('result').textContent;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text)
+            } else {
+                var textarea = document.createElement('textarea');
+                document.body.appendChild(textarea);
+                textarea.style.position = 'fixed';
+                textarea.style.clip = 'rect(0 0 0 0)';
+                textarea.style.top = '10px';
+                textarea.value = text;
+                textarea.select();
+                document.execCommand('copy', true);
+                document.body.removeChild(textarea);
+            }
         }
 
         document.getElementById('keybox').addEventListener('click', (event) => {
